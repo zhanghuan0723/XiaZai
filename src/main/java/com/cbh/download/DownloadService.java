@@ -9,7 +9,6 @@ import android.net.NetworkInfo;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
-import android.util.Log;
 
 import com.cbh.db.controller.DownloadEntryController;
 import com.cbh.entity.Constants;
@@ -142,7 +141,6 @@ public class DownloadService extends Service {
         }
 
         // 判断当前下载任务数是否超过设置的最大下载数
-        Log.i("zhang.h", mDownloadChanger.getDownloadTasks().size() + "");
         if (mDownloadChanger.getDownloadTasks().size() >= Constants.MAX_DOWNLOAD_FILE_SIZE) {
             setStatus(entity, DownloadStatus.WAITING);
         } else {

@@ -42,7 +42,6 @@ public class DownloadManager {
         }
     }
 
-
     // 全部开始
     public void addAll(ArrayList<DownloadEntity> entities) {
         for (DownloadEntity entity : entities) {
@@ -59,7 +58,9 @@ public class DownloadManager {
 
     // 全部暂停
     public void pauseAll() {
-        context.startService(getIntent(null, DownloadStatus.PAUSEALL));
+        if (checkIfIsExecutable()) {
+            context.startService(getIntent(null, DownloadStatus.PAUSEALL));
+        }
     }
 
     // 继续
@@ -71,7 +72,9 @@ public class DownloadManager {
 
     // 全部继续
     public void resumeAll() {
-        context.startService(getIntent(null, DownloadStatus.RESUMEALL));
+        if (checkIfIsExecutable()) {
+            context.startService(getIntent(null, DownloadStatus.RESUMEALL));
+        }
     }
 
     // 取消

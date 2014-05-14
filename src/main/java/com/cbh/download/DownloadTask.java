@@ -22,7 +22,6 @@ public class DownloadTask extends Thread {
     private Handler mDownloadHandler;
 
     private DownloadStatus status = DownloadStatus.DOWNLOADING;
-    private int percent;
 
     public DownloadTask(DownloadEntity entity, Handler handler) {
         this.entity = entity;
@@ -70,9 +69,9 @@ public class DownloadTask extends Thread {
             case INTERRUPT:
                 // 更改状态
                 entity.setStatus(status);
-
                 // 更新数据库
                 DownloadEntryController.addOrUpdate(entity);
+
                 Message msg = new Message();
                 msg.what = 1;
                 msg.obj = entity;
@@ -138,11 +137,20 @@ public class DownloadTask extends Thread {
         mDownloadData.put(index, curPos);
         entity.setProgress(entity.getProgress() + readLength);
         entity.setDownloadedData(mDownloadData);
-        if (entity.getProgress() == entity.getFileSize()) {
+        if (entity.getProgress() != entity.getFileSize()) {
+            // 实时更新进度
+            Message msg = new Message();
+            msg.what = 1;
+            msg.obj = entity;
+            mDownloadHandler.sendMessage(msg);
+        } else {
+            // 下载完成
             status = DownloadStatus.COMPLETED;
-            return;
-        }
-        if (entity.getProgress() * 100L / entity.getFileSize() > percent) {
+            // 更改状态
+            entity.setStatus(status);
+            // 更新数据库
+            DownloadEntryController.addOrUpdate(entity);
+
             Message msg = new Message();
             msg.what = 1;
             msg.obj = entity;

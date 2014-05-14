@@ -5,7 +5,7 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 import java.io.Serializable;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 /**
  * Created by Simon on 2014/5/12.
@@ -29,9 +29,9 @@ public class DownloadEntity implements Serializable {
     private int progress;
 
     @DatabaseField
-    private DownloadStatus status = DownloadStatus.NOTHING;  // 下载状态
+    private DownloadStatus status = DownloadStatus.NOTHING;     // 下载状态
     @DatabaseField(dataType = DataType.SERIALIZABLE)
-    private HashMap<Integer, Integer> downloadedData;        // 对应线程下载的数据，用于多线程
+    private LinkedHashMap<Integer, Integer> downloadedData;     // 对应线程下载的数据，用于多线程
 
     @DatabaseField
     private long createTime;
@@ -92,11 +92,11 @@ public class DownloadEntity implements Serializable {
         this.status = status;
     }
 
-    public HashMap<Integer, Integer> getDownloadedData() {
+    public LinkedHashMap<Integer, Integer> getDownloadedData() {
         return downloadedData;
     }
 
-    public void setDownloadedData(HashMap<Integer, Integer> downloadedData) {
+    public void setDownloadedData(LinkedHashMap<Integer, Integer> downloadedData) {
         this.downloadedData = downloadedData;
     }
 

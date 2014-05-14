@@ -9,8 +9,7 @@ import com.cbh.entity.DownloadEntity;
 import com.cbh.entity.DownloadStatus;
 import com.cbh.util.TextUtil;
 
-import java.io.File;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 /**
  * Created by Simon on 2014/5/12.
@@ -29,7 +28,7 @@ public class DownloadTask extends Thread {
         this.entity = entity;
         this.mDownloadHandler = handler;
         if (!TextUtil.isValidate(entity.getDownloadedData())) {
-            HashMap<Integer, Integer> data = new HashMap<Integer, Integer>();
+            LinkedHashMap<Integer, Integer> data = new LinkedHashMap<Integer, Integer>();
             for (int i = 0; i < Constants.MAX_DOWNLOAD_THREAD_SIZE; i++) {
                 data.put(i, 0);
             }
@@ -135,7 +134,7 @@ public class DownloadTask extends Thread {
 
     // 更新下载过程的状态
     public synchronized void update(int index, int readLength, int curPos) {
-        HashMap<Integer, Integer> mDownloadData = entity.getDownloadedData();
+        LinkedHashMap<Integer, Integer> mDownloadData = entity.getDownloadedData();
         mDownloadData.put(index, curPos);
         entity.setProgress(entity.getProgress() + readLength);
         entity.setDownloadedData(mDownloadData);

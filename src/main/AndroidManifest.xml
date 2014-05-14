@@ -26,6 +26,7 @@
             </intent-filter>
         </activity>
         <activity android:name="com.cbh.DownloadListActivity" />
+        <activity android:name="com.cbh.DownloadListSortActivity" />
 
         <service android:name="com.cbh.download.DownloadService" />
     </application>

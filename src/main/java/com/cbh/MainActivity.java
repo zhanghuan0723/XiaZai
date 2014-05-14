@@ -20,7 +20,7 @@ import java.util.Map;
 
 public class MainActivity extends Activity implements View.OnClickListener {
 
-    private Button downloadBtn, downloadListBtn;
+    private Button downloadBtn, downloadListBtn, downloadListSortBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +31,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
         downloadBtn.setOnClickListener(this);
         downloadListBtn = (Button) findViewById(R.id.downloadListBtn);
         downloadListBtn.setOnClickListener(this);
+        downloadListSortBtn = (Button) findViewById(R.id.downloadListSortBtn);
+        downloadListSortBtn.setOnClickListener(this);
     }
 
     @Override
@@ -44,6 +46,11 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 // 跳至下载列表页面
                 Intent intent = new Intent(this, DownloadListActivity.class);
                 startActivity(intent);
+                break;
+            case R.id.downloadListSortBtn:
+                // 跳至下载列表排序页面
+                Intent i = new Intent(this, DownloadListSortActivity.class);
+                startActivity(i);
                 break;
         }
     }

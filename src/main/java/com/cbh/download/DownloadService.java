@@ -133,8 +133,10 @@ public class DownloadService extends Service {
         if (!mDownloadChanger.getDownloadQueue().containsKey(entity.getId())) {
             mDownloadChanger.getDownloadQueue().put(entity.getId(), entity);
         } else {
+            // 若添加重复下载项
+            // 1. 当前待下载列表中已存在
+            // 2. 当前待下载项状态为NOTHING
             if (entity.getStatus() == DownloadStatus.NOTHING) {
-                Log.i("zhang.h", entity.getName() + ", " + entity.getStatus());
                 return;
             }
         }

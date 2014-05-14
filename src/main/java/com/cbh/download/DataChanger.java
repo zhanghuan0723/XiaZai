@@ -3,7 +3,6 @@ package com.cbh.download;
 import com.cbh.entity.DownloadEntity;
 import com.cbh.util.TextUtil;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Observable;
 
@@ -14,7 +13,7 @@ import java.util.Observable;
 public class DataChanger extends Observable {
 
     // 正在下载tasks
-    private HashMap<String, DownloadTask> mDownloadingTasks;
+    private LinkedHashMap<String, DownloadTask> mDownloadingTasks;
 
     // 等待下载的entities
     private LinkedHashMap<String, DownloadEntity> mDownloadingEntities;
@@ -22,7 +21,7 @@ public class DataChanger extends Observable {
     private static DataChanger instance;
 
     private DataChanger() {
-        mDownloadingTasks = new HashMap<String, DownloadTask>();
+        mDownloadingTasks = new LinkedHashMap<String, DownloadTask>();
         mDownloadingEntities = new LinkedHashMap<String, DownloadEntity>();
     }
 
@@ -38,6 +37,7 @@ public class DataChanger extends Observable {
         notifyObservers();
     }
 
+    // 用于删除操作
     public void setDownloadQueue(LinkedHashMap<String, DownloadEntity> queue) {
         if (TextUtil.isValidate(queue)) {
             mDownloadingEntities = queue;
@@ -48,7 +48,7 @@ public class DataChanger extends Observable {
         return mDownloadingEntities;
     }
 
-    public HashMap<String, DownloadTask> getDownloadTasks() {
+    public LinkedHashMap<String, DownloadTask> getDownloadTasks() {
         return mDownloadingTasks;
     }
 

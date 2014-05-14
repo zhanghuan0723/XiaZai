@@ -16,7 +16,6 @@ import com.cbh.entity.DownloadEntity;
 import com.cbh.entity.DownloadStatus;
 
 import java.io.File;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -149,7 +148,7 @@ public class DownloadService extends Service {
     }
 
     private void pauseDownload(DownloadEntity entity) {
-        HashMap<String, DownloadTask> tasks = mDownloadChanger.getDownloadTasks();
+        LinkedHashMap<String, DownloadTask> tasks = mDownloadChanger.getDownloadTasks();
         if (tasks.containsKey(entity.getId())) {
             tasks.get(entity.getId()).pause();
         }
@@ -167,7 +166,7 @@ public class DownloadService extends Service {
     }
 
     private void cancelDownload(DownloadEntity entity) {
-        HashMap<String, DownloadTask> tasks = mDownloadChanger.getDownloadTasks();
+        LinkedHashMap<String, DownloadTask> tasks = mDownloadChanger.getDownloadTasks();
         if (tasks.containsKey(entity.getId())) {
             tasks.get(entity.getId()).cancel();
         } else {
@@ -186,7 +185,7 @@ public class DownloadService extends Service {
         }
 
         // 改变正在下载的状态
-        HashMap<String, DownloadTask> tasks = mDownloadChanger.getDownloadTasks();
+        LinkedHashMap<String, DownloadTask> tasks = mDownloadChanger.getDownloadTasks();
         for (Map.Entry<String, DownloadTask> entry : tasks.entrySet()) {
             entry.getValue().pause();
         }

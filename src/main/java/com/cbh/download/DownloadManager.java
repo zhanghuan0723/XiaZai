@@ -3,12 +3,10 @@ package com.cbh.download;
 import android.content.Context;
 import android.content.Intent;
 
-import com.cbh.db.controller.DownloadEntryController;
 import com.cbh.entity.Constants;
 import com.cbh.entity.DownloadEntity;
 import com.cbh.entity.DownloadStatus;
 
-import java.io.File;
 import java.util.ArrayList;
 
 /**

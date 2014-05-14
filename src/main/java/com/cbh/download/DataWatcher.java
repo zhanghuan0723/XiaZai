@@ -2,7 +2,6 @@ package com.cbh.download;
 
 import com.cbh.entity.DownloadEntity;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Observable;
 import java.util.Observer;

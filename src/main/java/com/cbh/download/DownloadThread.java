@@ -102,7 +102,7 @@ public class DownloadThread extends Thread {
         }
     }
 
-    public void pause() {
+    public synchronized void pause() {
         isPaused = true;
     }
 

@@ -11,4 +11,6 @@ public class Constants {
 
     public static final String KEY_DOWNLOAD_ENTITY = "key_download_entity";
     public static final String KEY_DOWNLOAD_ACTION = "key_download_action";
+
+    public static final int KEY_HANDLER_DATA_CHANGED = 1001;
 }

@@ -66,14 +66,13 @@ public class DownloadTask extends Thread {
                 entity.setProgress(0);
             case PAUSE:
             case COMPLETED:
-            case INTERRUPT:
                 // 更改状态
                 entity.setStatus(status);
                 // 更新数据库
                 DownloadEntryController.addOrUpdate(entity);
 
                 Message msg = new Message();
-                msg.what = 1;
+                msg.what = Constants.KEY_HANDLER_DATA_CHANGED;
                 msg.obj = entity;
                 mDownloadHandler.sendMessage(msg);
                 break;
@@ -85,17 +84,6 @@ public class DownloadTask extends Thread {
     public synchronized void pause() {
         // 更新状态
         status = DownloadStatus.PAUSE;
-        // 循环每一个子线程，暂停
-        for (int i = 0; i < downloadThreads.length; i++) {
-            if (downloadThreads[i] != null) {
-                downloadThreads[i].pause();
-            }
-        }
-    }
-
-    public synchronized void pauseByNet() {
-        // 更新状态
-        status = DownloadStatus.INTERRUPT;
         // 循环每一个子线程，暂停
         for (int i = 0; i < downloadThreads.length; i++) {
             if (downloadThreads[i] != null) {
@@ -140,7 +128,7 @@ public class DownloadTask extends Thread {
         if (entity.getProgress() != entity.getFileSize()) {
             // 实时更新进度
             Message msg = new Message();
-            msg.what = 1;
+            msg.what = Constants.KEY_HANDLER_DATA_CHANGED;
             msg.obj = entity;
             mDownloadHandler.sendMessage(msg);
         } else {
@@ -152,7 +140,7 @@ public class DownloadTask extends Thread {
             DownloadEntryController.addOrUpdate(entity);
 
             Message msg = new Message();
-            msg.what = 1;
+            msg.what = Constants.KEY_HANDLER_DATA_CHANGED;
             msg.obj = entity;
             mDownloadHandler.sendMessage(msg);
         }

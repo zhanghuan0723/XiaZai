@@ -38,7 +38,7 @@ public class DownloadService extends Service {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             switch (msg.what) {
-                case 1:
+                case Constants.KEY_HANDLER_DATA_CHANGED:
                     DownloadEntity entity = (DownloadEntity) msg.obj;
                     mDownloadChanger.notifyDataChanged(entity);
                     checkStatus(entity);
@@ -62,9 +62,6 @@ public class DownloadService extends Service {
                     }
                 }
                 break;
-            case INTERRUPT:
-                mDownloadChanger.getDownloadTasks().remove(entity.getId());
-                break;
             case DOWNLOADING:
                 // send notification
                 break;
@@ -83,12 +80,6 @@ public class DownloadService extends Service {
 
         // init DataChanger
         mDownloadChanger = DataChanger.getInstance();
-
-        // query DownloadEntry history from db
-        // mDownloadChanger.setDownloadQueue(DownloadEntryController.queryAllUnCompletedRecord());
-
-        // start uncompleted download
-        // recoverDownload();
     }
 
     @Override
@@ -211,24 +202,6 @@ public class DownloadService extends Service {
         }
     }
 
-    // 中断下载
-    private void interruptDownload() {
-        HashMap<String, DownloadTask> tasks = mDownloadChanger.getDownloadTasks();
-        for (Map.Entry<String, DownloadTask> entry : tasks.entrySet()) {
-            entry.getValue().pauseByNet();
-        }
-    }
-
-    // 恢复下载
-    private void recoverDownload() {
-        LinkedHashMap<String, DownloadEntity> queue = mDownloadChanger.getDownloadQueue();
-        for (Map.Entry<String, DownloadEntity> entry : queue.entrySet()) {
-            if (entry.getValue().getStatus() == DownloadStatus.INTERRUPT) {
-                addDownload(entry.getValue());
-            }
-        }
-    }
-
     // 通知观察者更改(UI)状态
     private void setStatus(DownloadEntity entity, DownloadStatus status) {
         entity.setStatus(status);
@@ -266,9 +239,9 @@ public class DownloadService extends Service {
             NetworkInfo wifiNetInfo = connectMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
             // 仅wifi
             if (wifiNetInfo != null && wifiNetInfo.isConnected()) {
-                recoverDownload();
+                resumeAll();
             } else {
-                interruptDownload();
+                pauseAll();
             }
         }
     }

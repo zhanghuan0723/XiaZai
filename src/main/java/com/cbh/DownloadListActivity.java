@@ -15,6 +15,7 @@ import com.cbh.entity.DownloadEntity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class DownloadListActivity extends Activity implements View.OnClickListener {
@@ -28,7 +29,7 @@ public class DownloadListActivity extends Activity implements View.OnClickListen
     private DataWatcher mDownloadWatcher = new DataWatcher() {
 
         @Override
-        public void onDownloadStatusChanged(HashMap<String, DownloadEntity> mDownloadQueue) {
+        public void onDownloadStatusChanged(LinkedHashMap<String, DownloadEntity> mDownloadQueue) {
             updateDownloadStatus(mDownloadQueue);
         }
     };
@@ -40,7 +41,7 @@ public class DownloadListActivity extends Activity implements View.OnClickListen
 
             TextView progressTV = (TextView) downloadList.findViewWithTag(entry.getKey());
             if (progressTV == null) return;
-            String percent = currEntity.getProgress() * 100L / currEntity.getFileSize() + "%";
+            String percent = currEntity.getStatus() + "|" + currEntity.getProgress() + "/ " + currEntity.getFileSize();
             progressTV.setText(percent);
         }
     }

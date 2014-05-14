@@ -3,6 +3,7 @@ package com.cbh.download;
 import com.cbh.entity.DownloadEntity;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -17,5 +18,5 @@ public abstract class DataWatcher implements Observer {
         onDownloadStatusChanged(((DataChanger)observable).getDownloadQueue());
     }
 
-    public abstract void onDownloadStatusChanged(HashMap<String, DownloadEntity> mDownloadQueue);
+    public abstract void onDownloadStatusChanged(LinkedHashMap<String, DownloadEntity> mDownloadQueue);
 }

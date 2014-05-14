@@ -56,7 +56,7 @@ public class DownloadService extends Service {
             case COMPLETED:
             case PAUSE:
                 mDownloadChanger.getDownloadTasks().remove(entity.getId());
-                HashMap<String, DownloadEntity> mDownloadQueue = mDownloadChanger.getDownloadQueue();
+                LinkedHashMap<String, DownloadEntity> mDownloadQueue = mDownloadChanger.getDownloadQueue();
                 for (Map.Entry<String, DownloadEntity> entry : mDownloadQueue.entrySet()) {
                     if (entry.getValue().getStatus() == DownloadStatus.WAITING) {
                         addDownload(entry.getValue());
@@ -142,6 +142,7 @@ public class DownloadService extends Service {
         }
 
         // 判断当前下载任务数是否超过设置的最大下载数
+        Log.i("zhang.h", mDownloadChanger.getDownloadTasks().size() + "");
         if (mDownloadChanger.getDownloadTasks().size() >= Constants.MAX_DOWNLOAD_FILE_SIZE) {
             setStatus(entity, DownloadStatus.WAITING);
         } else {
@@ -185,12 +186,14 @@ public class DownloadService extends Service {
         }
     }
 
-    // 暂停全部
+    // 暂停全部(暂停未完成的)
     private void pauseAll() {
-        // 改变所有等待下载的状态
-        HashMap<String, DownloadEntity> queue = mDownloadChanger.getDownloadQueue();
+        // 修改除完成状态外为暂停状态
+        LinkedHashMap<String, DownloadEntity> queue = mDownloadChanger.getDownloadQueue();
         for (Map.Entry<String, DownloadEntity> entry : queue.entrySet()) {
-            entry.getValue().setStatus(DownloadStatus.PAUSE);
+            if (entry.getValue().getStatus() != DownloadStatus.COMPLETED) {
+                entry.getValue().setStatus(DownloadStatus.PAUSE);
+            }
         }
 
         // 改变正在下载的状态
@@ -200,13 +203,13 @@ public class DownloadService extends Service {
         }
     }
 
-    // 继续全部
+    // 继续全部(继续未完成的)
     private void resumeAll() {
-        HashMap<String, DownloadEntity> queue = mDownloadChanger.getDownloadQueue();
+        LinkedHashMap<String, DownloadEntity> queue = mDownloadChanger.getDownloadQueue();
         for (Map.Entry<String, DownloadEntity> entry : queue.entrySet()) {
-            DownloadEntity currEntity = entry.getValue();
-            currEntity.setStatus(DownloadStatus.DOWNLOADING);
-            addDownload(currEntity);
+            if (entry.getValue().getStatus() != DownloadStatus.COMPLETED) {
+                addDownload(entry.getValue());
+            }
         }
     }
 
@@ -220,7 +223,7 @@ public class DownloadService extends Service {
 
     // 恢复下载
     private void recoverDownload() {
-        HashMap<String, DownloadEntity> queue = mDownloadChanger.getDownloadQueue();
+        LinkedHashMap<String, DownloadEntity> queue = mDownloadChanger.getDownloadQueue();
         for (Map.Entry<String, DownloadEntity> entry : queue.entrySet()) {
             if (entry.getValue().getStatus() == DownloadStatus.INTERRUPT) {
                 addDownload(entry.getValue());
